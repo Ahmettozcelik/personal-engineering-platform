@@ -1,0 +1,22 @@
+# Local development infrastructure.
+# Values come from .env (copy .env.example); the defaults below are for local development only.
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-platform}
+      POSTGRES_USER: ${DB_USERNAME:-platform}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-platform}
+    ports:
+      # Bound to localhost only; PostgreSQL must never be reachable from other machines.
+      - "127.0.0.1:${DB_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-data:

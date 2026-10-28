@@ -1,0 +1,3 @@
+-- Baseline migration.
+-- Intentionally empty: it establishes Flyway's schema history for this database.
+-- Module tables are added in later versioned migrations (V2__..., V3__...).
